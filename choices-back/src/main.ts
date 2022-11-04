@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { OptionsModule } from './module/options.module';
+import { ComputationModule } from './module/computation.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(OptionsModule);
+  const app = await NestFactory.create(ComputationModule);
   // enabled for local dev by yunfengzz
   if (process.env.isLocal) {
     app.enableCors();

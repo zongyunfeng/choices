@@ -1,8 +1,14 @@
-import {get, post} from "../utils/http";
+import {post} from "../utils/http";
 import {OptionTreeNode} from "../model/OptionTreeNode";
+import {GetComputationItemParam} from "./payload/GetComputationItemParam";
+import {ComputationItem} from "../model/ComputationItem";
 
-function getOptionTree() {
-    return post<Array<OptionTreeNode>>('http://localhost:8080/options/tree')
+function getComputationTree() {
+    return post<Array<OptionTreeNode>>('http://localhost:8080/computation/tree')
 }
 
-export {getOptionTree};
+function getComputationItem(id: string) {
+    return post<ComputationItem>('http://localhost:8080/computation/item', new GetComputationItemParam({id}))
+}
+
+export {getComputationTree,getComputationItem};

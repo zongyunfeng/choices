@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OptionsController } from './app.controller';
-import { OptionsService } from './app.service';
+import { ComputationService } from '../service/computation.service';
+import { ComputationController } from './computation.controller';
 
 describe('AppController', () => {
-  let appController: OptionsController;
+  let appController: ComputationController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [OptionsController],
-      providers: [OptionsService],
+      controllers: [ComputationController],
+      providers: [ComputationService],
     }).compile();
 
-    appController = app.get<OptionsController>(OptionsController);
+    appController = app.get<ComputationController>(ComputationController);
   });
 
   describe('root', () => {

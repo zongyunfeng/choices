@@ -6,7 +6,7 @@ import {
 import {optionTreeDatas2DataNodes} from "../utils/converter";
 import {useEffect, useState} from "react";
 import {useRequest} from "ahooks";
-import {getOptionTree} from "../service/OptionsApi";
+import {getComputationTree} from "../service/OptionsApi";
 
 function OptionsTree() {
     const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
@@ -17,7 +17,7 @@ function OptionsTree() {
         info.event.dataTransfer.setData('opt', `${info.node.key}`)
     };
 
-    const {data,error,loading}=useRequest(getOptionTree);
+    const {data,error,loading}=useRequest(getComputationTree);
     const [treeData,setTreeData]=useState<Array<DataNode>>([]);
     useEffect(()=>{
         const dataNodes=optionTreeDatas2DataNodes(data?.data?.data||[]);

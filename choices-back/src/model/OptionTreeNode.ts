@@ -1,7 +1,19 @@
 class OptionTreeNode {
+  /**
+   * the id of the tree node
+   */
   id: string;
+  /**
+   * the title of the tree node
+   */
   title: string;
+  /**
+   * children nodes
+   */
   children?: Array<OptionTreeNode>;
+  /**
+   * the id of the parent node
+   */
   parent?: string;
 
   constructor(data?: OptionTreeNode) {
