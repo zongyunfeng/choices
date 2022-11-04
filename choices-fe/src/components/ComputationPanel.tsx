@@ -1,6 +1,6 @@
 import {useRef, useState} from "react";
 import {useDrop} from "ahooks";
-import './ComputationPanel.css';
+import styles from './ComputationPanel.module.scss';
 
 function ComputationPanel() {
     const [isHovering, setIsHovering] = useState(false);
@@ -16,14 +16,8 @@ function ComputationPanel() {
     });
 
     return (
-        <div className={'computation-panel'}>
-            <div ref={dropRef} style={{
-                border: '1px dashed #e8e8e8',
-                padding: 16,
-                textAlign: 'center',
-                width: '300px',
-                height: '300px'
-            }}>
+        <div className={styles.computation_container}>
+            <div ref={dropRef} className={styles.computation_container_drop}>
                 {isHovering ? 'release here' : 'drop here'}
             </div>
             <div>

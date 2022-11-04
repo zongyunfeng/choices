@@ -7,7 +7,7 @@ import * as path from 'path';
 export class OptionsService {
   async getOptionTree(): Promise<Array<OptionTreeNode>> {
     const optionTreeDataString = await readFile(
-      path.resolve(__dirname, '../', './optionTreeData.json'),
+      path.resolve(__dirname, '../', '../', './optionTreeData.json'),
       {
         encoding: 'utf8',
       },

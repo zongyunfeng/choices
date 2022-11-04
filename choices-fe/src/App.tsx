@@ -1,5 +1,5 @@
 import 'antd/dist/antd.css';
-import './App.css'
+import './App.scss'
 import OptionsTree from "./components/OptionsTree";
 import ComputationPanel from "./components/ComputationPanel";
 
