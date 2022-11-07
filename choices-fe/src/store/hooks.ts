@@ -4,13 +4,14 @@ import {visit} from "../utils/computationNodeVisitor";
 import {StatefulOption} from "../model/StatefulOption";
 import {Option} from "../model/Option";
 import {ComputationNode} from "../model/ComputationNode";
+import {Root_Computation_Node_SerialId} from "../utils/constants";
 
 export const useComputationDispatch: () => AppDispatch = useDispatch
 export const useComputationSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export const useComputationNode: (serialId: string) => ComputationNode | undefined = (serialId: string) => {
     const rootComputationNode = useComputationSelector((state) => state.computation.value)
-    if (serialId === '_RootNode') {
+    if (serialId === Root_Computation_Node_SerialId) {
         return rootComputationNode;
     }
     const targetComputationNode = visit(serialId, rootComputationNode);
@@ -18,16 +19,10 @@ export const useComputationNode: (serialId: string) => ComputationNode | undefin
 }
 
 export const useRootComputationNode = () => {
-    return useComputationNode('_RootNode');
+    return useComputationNode(Root_Computation_Node_SerialId);
 }
 
 export const useComputationNodeOptions = (serialId: string) => {
     const targetComputationNode = useComputationNode(serialId);
     return targetComputationNode?.options || new Array<StatefulOption<Option>>();
-}
-
-export const useComputationItem=(id:string)=>{
-    const computationItems=useComputationSelector((state)=>state.computationItem.value)
-    const target=computationItems.find(item=>item.nodeId===id)
-    return target
 }

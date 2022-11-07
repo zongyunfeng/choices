@@ -1,18 +1,16 @@
 import styles from './Selection.module.scss'
-import {SearchOutlined} from "@ant-design/icons";
-import {Button, Input, Select} from "antd";
+import {Button, Select} from "antd";
 import React from "react";
 import ComputationOptionGroup from "./ComputationOptionGroup";
-import {useComputationDispatch, useComputationNode, useComputationNodeOptions} from "../store/hooks";
+import {useComputationDispatch, useComputationNodeOptions} from "../store/hooks";
 import {clearOptionsStatusForComputationNode, markOptionsStatusForComputationNode} from "../store/computationSlice";
 import {MarkNodeOptionsStatusPayload} from "../store/payload/MarkNodeOptionsStatusPayload";
 
 interface SelectionProp {
     serialId: string;
-    onCheck: (checked: boolean, title: string) => void;
 }
 
-const Selection: React.FC<SelectionProp> = ({serialId, onCheck}) => {
+const Selection: React.FC<SelectionProp> = ({serialId}) => {
     const options = useComputationNodeOptions(serialId);
     const selectedOptions = options.filter(item => item.status);
     const dispatch = useComputationDispatch();
@@ -22,7 +20,7 @@ const Selection: React.FC<SelectionProp> = ({serialId, onCheck}) => {
             value: item.option.title
         }
     })
-    const selectedOptionsForSelect=selectedOptions.map(item=>item.option.title);
+    const selectedOptionsForSelect = selectedOptions.map(item => item.option.title);
     return (
         <div className={styles.selection_container}>
             <div className={styles.selection_container_search}>
@@ -34,19 +32,19 @@ const Selection: React.FC<SelectionProp> = ({serialId, onCheck}) => {
                         size={'middle'}
                         placeholder="Select an option"
                         style={{width: '200px'}}
-                        onSelect={(title:string)=>{
-                            const item=options.find(op=>op.option.title===title);
-                            if(item){
+                        onSelect={(title: string) => {
+                            const item = options.find(op => op.option.title === title);
+                            if (item) {
                                 dispatch(markOptionsStatusForComputationNode(MarkNodeOptionsStatusPayload.create(
-                                    item.option.id,serialId,!item.status
+                                    item.option.id, serialId, !item.status
                                 )))
                             }
                         }}
-                        onDeselect={(title:string)=>{
-                            const item=options.find(op=>op.option.title===title);
-                            if(item){
+                        onDeselect={(title: string) => {
+                            const item = options.find(op => op.option.title === title);
+                            if (item) {
                                 dispatch(markOptionsStatusForComputationNode(MarkNodeOptionsStatusPayload.create(
-                                    item.option.id,serialId,!item.status
+                                    item.option.id, serialId, !item.status
                                 )))
                             }
                         }}

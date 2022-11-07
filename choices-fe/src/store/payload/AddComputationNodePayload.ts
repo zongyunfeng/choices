@@ -7,11 +7,11 @@ class AddComputationNodePayload {
 
     private constructor(data: AddComputationNodePayload) {
         this.parentSerialId = data.parentSerialId;
-        this.targetSerialId = data.targetSerialId
+        this.targetSerialId = data.targetSerialId;
         this.item = data.item;
     }
 
-    public static create(parentSerialId: string,  targetSerialId: string,item: ComputationItem) {
+    public static create(parentSerialId: string, targetSerialId: string, item: ComputationItem) {
         const data = new AddComputationNodePayload({
             parentSerialId, targetSerialId, item
         })

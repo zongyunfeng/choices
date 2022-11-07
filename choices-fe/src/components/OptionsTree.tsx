@@ -1,4 +1,4 @@
-import {Tree, TreeProps} from "antd";
+import {Card, Tree, TreeProps} from "antd";
 import {DataNode} from "antd/lib/tree";
 import {
     DownOutlined
@@ -26,17 +26,19 @@ function OptionsTree() {
     },[data?.data?.data])
 
     return (
-        <div className={styles.options_tree_container}>
-            <Tree
-                onDragStart={onDragStart}
-                draggable={(nodeData: DataNode) => {
-                    return !Boolean(nodeData?.children?.length)
-                }}
-                showIcon={true}
-                onSelect={onSelect}
-                switcherIcon={<DownOutlined/>}
-                treeData={treeData}/>
-        </div>
+        <Card>
+            <div className={styles.options_tree_container}>
+                <Tree
+                    onDragStart={onDragStart}
+                    draggable={(nodeData: DataNode) => {
+                        return !Boolean(nodeData?.children?.length)
+                    }}
+                    showIcon={true}
+                    onSelect={onSelect}
+                    switcherIcon={<DownOutlined/>}
+                    treeData={treeData}/>
+            </div>
+        </Card>
     )
 }
 

@@ -9,13 +9,13 @@ function visit(serialId: string, node: ComputationNode | undefined): Computation
         return node;
     }
 
-    const children = node.children;
+    const children = node.children || [];
 
-    const left = visit(serialId, children?.[0]);
-    const right = visit(serialId, children?.[1]);
+    const targetNodes = children.map(item => {
+        return visit(serialId, item)
+    }).filter(Boolean)
 
-    return left||right;
-
+    return targetNodes?.[0];
 }
 
 export {visit}
