@@ -1,0 +1,22 @@
+.selection_container {
+  &_search {
+    padding-left: 15px;
+    display: flex;
+    flex-direction: row;
+  }
+
+  &_operations {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &_clear {
+      color: green;
+    }
+  }
+
+  &_options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(100px,150px));
+  }
+}

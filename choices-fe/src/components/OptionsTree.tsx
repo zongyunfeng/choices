@@ -7,6 +7,7 @@ import {optionTreeDatas2DataNodes} from "../utils/converter";
 import {useEffect, useState} from "react";
 import {useRequest} from "ahooks";
 import {getComputationTree} from "../service/OptionsApi";
+import styles from './OptionsTree.module.scss'
 
 function OptionsTree() {
     const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
@@ -25,7 +26,7 @@ function OptionsTree() {
     },[data?.data?.data])
 
     return (
-        <>
+        <div className={styles.options_tree_container}>
             <Tree
                 onDragStart={onDragStart}
                 draggable={(nodeData: DataNode) => {
@@ -35,7 +36,7 @@ function OptionsTree() {
                 onSelect={onSelect}
                 switcherIcon={<DownOutlined/>}
                 treeData={treeData}/>
-        </>
+        </div>
     )
 }
 

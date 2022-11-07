@@ -11,11 +11,16 @@ class Option {
    * the count of match of this option
    */
   count: number;
+  /**
+   * the check status of the option
+   */
+  checked?:boolean;
 
   constructor(data?: Option) {
     this.id = data?.id || '';
     this.title = data?.title || '';
     this.count = data?.count || 0;
+    this.checked=data?.checked||false;
   }
 }
 

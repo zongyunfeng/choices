@@ -292,23 +292,6 @@
           "id": "d577f5fd-2bcf-4ebf-b960-91d1d6f0a67f",
           "title": "No",
           "count": 113
-        },
-        {
-          "nodeId": "636209c8fc13ae565c000655",
-          "title": "Like",
-          "directory": "LookLike Group / Like",
-          "options": [
-            {
-              "id": "7fbde861-5459-4444-b61f-624825a4858b",
-              "title": "Yse",
-              "count": 70
-            },
-            {
-              "id": "d577f5fd-2bcf-4ebf-b960-91d1d6f0a67f",
-              "title": "No",
-              "count": 32
-            }
-          ]
         }
       ]
     }
