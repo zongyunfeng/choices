@@ -26,6 +26,7 @@ interface ComputationGroupProp {
 
 const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
     const [collapse, setCollapse] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
 
     const computationNode = useComputationNode(serialId);
     const selectedOptions = computationNode?.options?.filter(item => item.status) || [];
@@ -48,10 +49,18 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
     }
     useDrop(dropRef, {
         onText: async (text, e) => {
+            setIsHovering(false);
             await addNewComputationNode(text, computationNode?.serialId || '', computationNode?.parentSerialId || '')
         },
         onDrop: (e) => {
             e?.stopPropagation();
+            setIsHovering(false);
+        },
+        onDragEnter: () => {
+            setIsHovering(true);
+        },
+        onDragLeave: () => {
+            setIsHovering(false);
         }
     });
 
@@ -61,7 +70,11 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
     return (
         <div ref={dropRef}>
             {showContent &&
-                <div className={styles.computation_card}>
+                <div className={styles.computation_card} style={
+                    isHovering ? {
+                        borderColor: "green",
+                        borderWidth: '3px'
+                    } : undefined}>
                     <div className={styles.computation_card_header}>
                         <HolderOutlined/>
                         <div className={styles.computation_card_header_title}>
@@ -84,7 +97,8 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
 
                     <div>
                         <FadeInOut show={!collapse}>
-                            <span className={styles.computation_card_directory}>{computationNode?.directory || ''}</span>
+                            <span
+                                className={styles.computation_card_directory}>{computationNode?.directory || ''}</span>
                             <ComputationSelector serialId={serialId}/>
                         </FadeInOut>
                     </div>

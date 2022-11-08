@@ -1,6 +1,6 @@
 .computation_card {
   background: white;
-  mix-width: 400px;
+  min-width: 400px;
   max-width: 550px;
   border: 2px solid;
   border-radius:5px;
@@ -71,3 +71,5 @@
     }
   }
 }
+
+
