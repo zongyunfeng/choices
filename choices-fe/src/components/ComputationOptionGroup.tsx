@@ -1,4 +1,4 @@
-import styles from "./Selection.module.scss";
+import styles from "./ComputationSelector.module.scss";
 import ComputationOption from "./ComputationOption";
 import React from "react";
 import {useComputationDispatch, useComputationNodeOptions} from "../store/hooks";

@@ -1,7 +1,8 @@
 import {Option} from "./Option";
 import {StatefulOption} from "./StatefulOption";
+import {EnumComputationOperationTypes} from "../utils/enums";
 
-class ComputationNode{
+class ComputationNode {
     /**
      * the id of the corresponding tree node
      * @see OptionTreeNode#id for detail
@@ -22,27 +23,36 @@ class ComputationNode{
     /**
      * the serialId of the computation node
      */
-    serialId:string;
+    serialId: string;
     /**
      * the serialId of the parent computation node
      */
-    parentSerialId:string;
+    parentSerialId: string;
     /**
      * children computation nodes
      */
-    children:Array<ComputationNode>;
+    children: Array<ComputationNode>;
 
-    isGroupContainerNode?:boolean=false;
+    /**
+     * indicate if a node is a container
+     */
+    isGroupContainerNode?: boolean = false;
 
-    constructor(data?:ComputationNode) {
+    /**
+     * indicate the operation between the children of the node
+     */
+    operation?: EnumComputationOperationTypes = EnumComputationOperationTypes.AND
+
+    constructor(data?: ComputationNode) {
         this.nodeId = data?.nodeId || '';
         this.title = data?.title || '';
         this.directory = data?.directory || '';
         this.options = data?.options || [];
-        this.serialId=data?.serialId||'';
-        this.parentSerialId=data?.parentSerialId||'';
-        this.children=data?.children||[];
-        this.isGroupContainerNode=data?.isGroupContainerNode||false;
+        this.serialId = data?.serialId || '';
+        this.parentSerialId = data?.parentSerialId || '';
+        this.children = data?.children || [];
+        this.isGroupContainerNode = data?.isGroupContainerNode || false;
+        this.operation = data?.operation || EnumComputationOperationTypes.AND
     }
 }
 

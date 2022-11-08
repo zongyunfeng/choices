@@ -1,0 +1,73 @@
+.computation_card {
+  background: white;
+  mix-width: 400px;
+  max-width: 550px;
+  border: 2px solid;
+  border-radius:5px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+
+  &_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 5px;
+    background: #f9f9f9;
+
+    &_title {
+      width: 100%
+    }
+
+    &_operations {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      &_collapse {
+        margin-right: 10px;
+      }
+
+      &_close {
+        margin-left: 10px;
+      }
+    }
+
+  }
+
+  &_directory{
+    margin-left: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+
+  &_children{
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 2px solid;
+    border-radius:10px;
+    background: cyan;
+
+    &_condition{
+     display: flex;
+      flex-direction: row;
+      justify-content:flex-start;
+
+      &_selector{
+        background: dodgerblue;
+        border-radius: 14px;
+        color: #f9f9f9;
+        padding: 5px 10px;
+
+        &_option{
+          background: #f9f9f9;
+        }
+      }
+    }
+  }
+}

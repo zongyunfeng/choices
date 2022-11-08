@@ -1,4 +1,4 @@
-import styles from './Selection.module.scss'
+import styles from './ComputationSelector.module.scss'
 import {Button, Select} from "antd";
 import React from "react";
 import ComputationOptionGroup from "./ComputationOptionGroup";
@@ -10,7 +10,7 @@ interface SelectionProp {
     serialId: string;
 }
 
-const Selection: React.FC<SelectionProp> = ({serialId}) => {
+const ComputationSelector: React.FC<SelectionProp> = ({serialId}) => {
     const options = useComputationNodeOptions(serialId);
     const selectedOptions = options.filter(item => item.status);
     const dispatch = useComputationDispatch();
@@ -59,8 +59,10 @@ const Selection: React.FC<SelectionProp> = ({serialId}) => {
             </div>
 
             <ComputationOptionGroup serialId={serialId}/>
+
+            <div className={styles.selection_container_footer}></div>
         </div>
     )
 }
 
-export default Selection
+export default ComputationSelector
