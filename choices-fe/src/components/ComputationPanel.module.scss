@@ -3,14 +3,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-top: 200px;
   border-radius: 5px;
   padding: 20px;
-  overflow: scroll;
 
   &_divider{
     background: #CCCCCC;
     width: 1px;
-    height: 100vh;
+    height: 80vh;
   }
 }

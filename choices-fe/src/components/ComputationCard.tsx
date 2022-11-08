@@ -8,7 +8,7 @@ import styles from './ComputationCard.module.scss'
 import React, {useRef, useState} from "react";
 import ComputationSelector from "./ComputationSelector";
 import {useComputationDispatch, useComputationNode} from "../store/hooks";
-import {useDrop} from "ahooks";
+import {useDebounce, useDrop, useInViewport} from "ahooks";
 import {
     addComputationNode,
     removeComputationNode
@@ -19,6 +19,7 @@ import {unwrapResult} from "@reduxjs/toolkit";
 import {RemoveComputationNodePayload} from "../store/payload/RemoveComputationNodePayload";
 import {ComputationOptions, Root_Computation_Node_SerialId} from "../utils/constants";
 import FadeInOut from "./FadeInOut/FadeInOut";
+import Container from "./Container";
 
 interface ComputationGroupProp {
     serialId: string;
@@ -33,6 +34,10 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
     const headers = selectedOptions.map(item => item.option?.title || '');
     const dropRef = useRef(null);
     const dispatch = useComputationDispatch();
+    const [inViewport] = useInViewport(dropRef);
+    const display = useDebounce(inViewport, {
+        wait: 500
+    })
     const addNewComputationNode = async (id: string, targetSerialId: string, parentSerialId: string) => {
         console.info('Group invoke')
         const resultAction = await dispatch(fetchComputationItemById(id))
@@ -69,10 +74,10 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
 
     return (
         <div ref={dropRef}>
-            {showContent &&
+            <Container visible={showContent}>
                 <div className={styles.computation_card} style={
                     isHovering ? {
-                        border:'solid',
+                        border: 'solid',
                         borderColor: "green",
                         borderWidth: '3px'
                     } : undefined}>
@@ -80,7 +85,8 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
                         <HolderOutlined/>
                         <div className={styles.computation_card_header_title}>
                             <span>{`${computationNode?.title || ''}`}</span>
-                            <span className={styles.computation_card_header_title_options}>{headers?.length?`=${headers.join(',')}`:''}</span>
+                            <span
+                                className={styles.computation_card_header_title_options}>{headers?.length ? `=${headers.join(',')}` : ''}</span>
                         </div>
                         <div className={styles.computation_card_header_operations}>
                             <div onClick={() => {
@@ -104,7 +110,7 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
                         </FadeInOut>
                     </div>
                 </div>
-            }
+            </Container>
 
             <div className={showChildren ? styles.computation_card_children : ''}>
                 {
