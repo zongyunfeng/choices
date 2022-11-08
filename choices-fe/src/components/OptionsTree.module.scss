@@ -1,3 +1,20 @@
 .options_tree_container{
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
+  &_header{
+    display: flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items: center;
+    padding-left: 20px;
+  }
+
+  &_divider{
+    height: 1px;
+    background: #CCCCCC;
+  }
 }

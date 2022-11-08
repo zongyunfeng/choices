@@ -1,7 +1,7 @@
-import {Card, Tree, TreeProps} from "antd";
+import {Card, Divider, Spin, Tree, TreeProps} from "antd";
 import {DataNode} from "antd/lib/tree";
 import {
-    DownOutlined
+    DownOutlined, FolderFilled, HolderOutlined
 } from '@ant-design/icons';
 import {optionTreeDatas2DataNodes} from "../utils/converter";
 import {useEffect, useState} from "react";
@@ -25,9 +25,17 @@ function OptionsTree() {
         setTreeData(dataNodes);
     },[data?.data?.data])
 
+    if(loading){
+        return <Spin size={'large'}/>
+    }
+
     return (
-        <Card>
-            <div className={styles.options_tree_container}>
+        <div className={styles.options_tree_container}>
+            <div className={styles.options_tree_container_header}>
+                <span>Name</span>
+                <span>Size</span>
+            </div>
+            <div >
                 <Tree
                     onDragStart={onDragStart}
                     draggable={(nodeData: DataNode) => {
@@ -36,9 +44,10 @@ function OptionsTree() {
                     showIcon={true}
                     onSelect={onSelect}
                     switcherIcon={<DownOutlined/>}
-                    treeData={treeData}/>
+                    treeData={treeData}
+                />
             </div>
-        </Card>
+        </div>
     )
 }
 

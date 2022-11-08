@@ -72,14 +72,15 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
             {showContent &&
                 <div className={styles.computation_card} style={
                     isHovering ? {
+                        border:'solid',
                         borderColor: "green",
                         borderWidth: '3px'
                     } : undefined}>
                     <div className={styles.computation_card_header}>
                         <HolderOutlined/>
                         <div className={styles.computation_card_header_title}>
-                            <span>{`${computationNode?.title || ''}=`}</span>
-                            <span>{`${headers.join(',')}`}</span>
+                            <span>{`${computationNode?.title || ''}`}</span>
+                            <span className={styles.computation_card_header_title_options}>{headers?.length?`=${headers.join(',')}`:''}</span>
                         </div>
                         <div className={styles.computation_card_header_operations}>
                             <div onClick={() => {

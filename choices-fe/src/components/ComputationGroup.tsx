@@ -39,8 +39,9 @@ const ComputationGroup: React.FC<ComputationPanelProp> = ({}) => {
     });
 
     return (
-        <div className={styles.computation_container}>
-            <div className={styles.computation_container_group} ref={dropRef}>
+        <div className={styles.computation_group}>
+            <span className={styles.computation_group_header}>Include members in these segments</span>
+            <div className={styles.computation_group_content} ref={dropRef}>
                 {
                     <ComputationCard serialId={Root_Computation_Node_SerialId}/>
                 }

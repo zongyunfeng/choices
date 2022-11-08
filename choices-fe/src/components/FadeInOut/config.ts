@@ -11,8 +11,11 @@ const fadeVariants: Variants = {
             },
             height: {
                 ease: 'easeIn', delay: 0.2, duration: 0.5
-            }
-        }
+            },
+        },
+        transitionEnd: {
+            display: "none",
+        },
     },
     show: {
         opacity: 1,
@@ -25,6 +28,9 @@ const fadeVariants: Variants = {
             height: {
                 ease: 'easeOut', duration: 0.3
             }
+        },
+        transitionEnd:{
+            display: 'block'
         }
     },
 } as const

@@ -1,5 +1,5 @@
-import {createSlice, nanoid} from '@reduxjs/toolkit'
 import type {PayloadAction} from '@reduxjs/toolkit'
+import {createSlice, nanoid} from '@reduxjs/toolkit'
 import {ComputationNode} from "../model/ComputationNode";
 import {AddComputationNodePayload} from "./payload/AddComputationNodePayload";
 import {StatefulOption} from "../model/StatefulOption";
@@ -9,6 +9,7 @@ import * as _ from 'lodash'
 import {RemoveComputationNodePayload} from "./payload/RemoveComputationNodePayload";
 import {Root_Computation_Node_SerialId} from "../utils/constants";
 import {message} from "antd";
+import {EnumComputationOperationTypes} from "../utils/enums";
 
 export interface ComputationState {
     value: ComputationNode
@@ -23,7 +24,8 @@ const rootNode = new ComputationNode(
         serialId: Root_Computation_Node_SerialId,
         parentSerialId: '',
         children: [],
-        isGroupContainerNode: true
+        isGroupContainerNode: true,
+        operation:EnumComputationOperationTypes.None
     })
 
 const initialState: ComputationState = {
@@ -86,7 +88,8 @@ export const computationSlice = createSlice({
                             serialId: groupSerialId,
                             parentSerialId: parent.serialId,
                             children: [targetNode, newNode],
-                            isGroupContainerNode: true
+                            isGroupContainerNode: true,
+                            operation: EnumComputationOperationTypes.AND
                         })
                         parent.children[targetIndex] = group
                     }
@@ -102,7 +105,6 @@ export const computationSlice = createSlice({
                 const upperNode = visit(parentNode.parentSerialId, newState.value)
                 if (upperNode) {
                     const parentIndex = upperNode?.children?.findIndex(item => item.serialId === parentNode.serialId);
-                    console.info({parentIndex})
                     if (parentIndex !== -1) {
                         const left = _.slice(upperNode?.children, 0, parentIndex)
                         const right = _.slice(upperNode?.children, parentIndex + 1)
@@ -114,6 +116,7 @@ export const computationSlice = createSlice({
                     }
                 } else {
                     parentNode.children = others
+                    parentNode.operation = EnumComputationOperationTypes.None
                 }
             }
             return newState
