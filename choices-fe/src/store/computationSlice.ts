@@ -10,6 +10,7 @@ import {RemoveComputationNodePayload} from "./payload/RemoveComputationNodePaylo
 import {Root_Computation_Node_SerialId} from "../utils/constants";
 import {message} from "antd";
 import {EnumComputationOperationTypes} from "../utils/enums";
+import {MarkNodeOptionsPayload} from "./payload/MarkNodeOptionsPayload";
 
 export interface ComputationState {
     value: ComputationNode
@@ -56,7 +57,7 @@ export const computationSlice = createSlice({
 
                 const hasAdded = parent?.children.find(item => item.nodeId === action.payload.item.nodeId)
                 if (hasAdded) {
-                    message.error('Please select a different nodde for computation!')
+                    message.error('Please select a different node for computation!')
                     return state;
                 }
 
@@ -73,7 +74,7 @@ export const computationSlice = createSlice({
                     const targetNode = parent.children[targetIndex]
 
                     if (targetNode.nodeId === action.payload.item.nodeId) {
-                        message.error('Please select a different nodde for computation!')
+                        message.error('Please select a different node for computation!')
                         return state;
                     }
                     const groupSerialId = nanoid();
@@ -142,6 +143,23 @@ export const computationSlice = createSlice({
                 return newState
             }
         },
+        markOptionsForComputationNode: (state, action: PayloadAction<MarkNodeOptionsPayload>) => {
+            const newState = _.cloneDeep<ComputationState>(state)
+            const target = visit(action.payload.serialId, newState.value)
+            if (target) {
+                const newOptions = target.options.map(item => {
+                    if(action.payload.ids.includes(item.option.id)){
+                        item.status=true
+                    }else{
+                        item.status=false
+                    }
+                    return item;
+                })
+
+                target.options=newOptions
+                return newState
+            }
+        },
     }
 })
 
@@ -149,7 +167,8 @@ export const {
     addComputationNode,
     removeComputationNode,
     clearOptionsStatusForComputationNode,
-    markOptionsStatusForComputationNode
+    markOptionsStatusForComputationNode,
+    markOptionsForComputationNode,
 } = computationSlice.actions
 
 export default computationSlice.reducer

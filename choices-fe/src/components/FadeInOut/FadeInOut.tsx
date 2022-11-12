@@ -1,19 +1,18 @@
 import React from "react";
-import {AnimatePresence, motion, Variants} from "framer-motion";
-import {upFadeVariants,downFadeVariants} from "./config";
+import {AnimatePresence, motion} from "framer-motion";
+import {upFadeVariants} from "./config";
 
 interface FadeInOutProp {
     show: boolean,
-    orientation?:'up'|'down',
     children: React.ReactNode
 }
 
-const FadeInOut: React.FC<FadeInOutProp> = ({show, children,orientation='up'}) => {
+const FadeInOut: React.FC<FadeInOutProp> = ({show, children}) => {
     return (
         <AnimatePresence>
             {(
                 <motion.div
-                    variants={orientation==='up'?upFadeVariants:downFadeVariants}
+                    variants={upFadeVariants}
                     animate={show ? 'show' : 'hide'}
                 >
                     {children}

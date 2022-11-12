@@ -102,26 +102,26 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
                         </div>
                     </div>
 
-                    <div>
-                        <FadeInOut show={!collapse}>
+                    <FadeInOut show={!collapse}>
                             <span
                                 className={styles.computation_card_directory}>{computationNode?.directory || ''}</span>
-                            <ComputationSelector serialId={serialId}/>
-                        </FadeInOut>
-                    </div>
+                        <ComputationSelector serialId={serialId}/>
+                    </FadeInOut>
                 </div>
             </Container>
 
             <div className={showChildren ? styles.computation_card_children : ''}>
                 {
                     computationNode?.children?.map((item, index) => {
-                        return <div>
+                        return <div key={item.serialId}>
                             {computationNode?.isGroupContainerNode && index % 2 === 1 &&
                                 <div className={styles.computation_card_children_condition}>
                                     <select className={styles.computation_card_children_condition_selector}>
                                         {
-                                            ComputationOptions.map(computationOption => {
-                                                return <option value={computationOption.value}
+                                            ComputationOptions.map((computationOption,index) => {
+                                                return <option
+                                                    key={index}
+                                                    value={computationOption.value}
                                                                selected={computationOption.value === computationNode?.operation}
                                                                className={styles.computation_card_children_condition_selector_option}>
                                                     {computationOption.title}

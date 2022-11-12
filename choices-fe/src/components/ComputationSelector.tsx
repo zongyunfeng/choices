@@ -1,10 +1,15 @@
 import styles from './ComputationSelector.module.scss'
 import {Button, Select} from "antd";
-import React from "react";
-import ComputationOptionGroup from "./ComputationOptionGroup";
+import React, {useCallback} from "react";
+import OptionGroup, {OptionGroupProp} from "./common/checkbox/OptionGroup";
 import {useComputationDispatch, useComputationNodeOptions} from "../store/hooks";
-import {clearOptionsStatusForComputationNode, markOptionsStatusForComputationNode} from "../store/computationSlice";
+import {
+    clearOptionsStatusForComputationNode,
+    markOptionsForComputationNode,
+    markOptionsStatusForComputationNode
+} from "../store/computationSlice";
 import {MarkNodeOptionsStatusPayload} from "../store/payload/MarkNodeOptionsStatusPayload";
+import {MarkNodeOptionsPayload} from "../store/payload/MarkNodeOptionsPayload";
 
 interface SelectionProp {
     serialId: string;
@@ -20,6 +25,27 @@ const ComputationSelector: React.FC<SelectionProp> = ({serialId}) => {
             value: item.option.title
         }
     })
+    const groupOptions=options.map(item=>{
+        return {
+            label: item.option.title,
+            value: item.option.id,
+            labelColor:'#CCCCCC',
+            tip:`${item.option.count}`,
+            isChecked:item.status
+        }
+    })
+    const onOptionStatusChange:OptionGroupProp['onChange'] = useCallback((checkedValues) => {
+        dispatch(
+            markOptionsForComputationNode(
+                MarkNodeOptionsPayload.create(
+                    checkedValues.map(item => item.toString()),
+                    serialId,
+                    true
+                )
+            )
+        )
+    }, [dispatch, serialId])
+
     const selectedOptionsForSelect = selectedOptions.map(item => item.option.title);
     return (
         <div className={styles.selection_container}>
@@ -58,11 +84,11 @@ const ComputationSelector: React.FC<SelectionProp> = ({serialId}) => {
                 <span>{`${selectedOptions?.length || 0} Selected`}</span>
             </div>
 
-            <ComputationOptionGroup serialId={serialId}/>
+            <OptionGroup options={groupOptions} onChange={onOptionStatusChange}/>
 
             <div className={styles.selection_container_footer}></div>
         </div>
     )
 }
 
-export default ComputationSelector
+export default React.memo(ComputationSelector)
