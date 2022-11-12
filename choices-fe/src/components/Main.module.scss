@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+  padding: 20px;
+
+  &_divider{
+    background: #CCCCCC;
+    width: 1px;
+    height: 80vh;
+  }
+}

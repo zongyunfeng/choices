@@ -1,14 +1,22 @@
 .computation_panel {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 5px;
-  padding: 20px;
+  background: #ffffff;
 
-  &_divider{
-    background: #CCCCCC;
-    width: 1px;
-    height: 80vh;
+  &_header{
+    display: flex;
+    flex-direction: row;
+    font-weight: bold;
+    margin-bottom:10px;
+  }
+
+  &_content {
+    border-radius:10px;
+    background-color: #BDFCC966;
+    min-width: 600px;
+    max-width: 600px;
+    max-height: 800px;
+    min-height: 500px;
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow: auto;
   }
 }

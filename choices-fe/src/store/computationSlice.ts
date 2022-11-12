@@ -133,9 +133,12 @@ export const computationSlice = createSlice({
         markOptionsStatusForComputationNode: (state, action: PayloadAction<MarkNodeOptionsStatusPayload>) => {
             const newState = _.cloneDeep<ComputationState>(state)
             const target = visit(action.payload.serialId, newState.value)
+            console.info({target})
             if (target) {
                 const targetOptionIndex = target.options.findIndex(item => item.option.id === action.payload.id)
+                console.info({targetOptionIndex})
                 const targetOption = target.options?.[targetOptionIndex]
+                console.info({targetOption})
                 if (targetOption) {
                     targetOption.status = action.payload.status
                     target.options[targetOptionIndex] = StatefulOption.create(targetOption.option, targetOption.status)

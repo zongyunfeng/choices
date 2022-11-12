@@ -8,7 +8,7 @@ interface OptionProp {
     value:string;
     labelColor?:string;
     tip?:string;
-    isChecked?: boolean;
+    isChecked: boolean;
 }
 
 const Option: React.FC<OptionProp> = ({label,value,labelColor, tip, isChecked}) => {

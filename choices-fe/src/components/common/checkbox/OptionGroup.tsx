@@ -1,5 +1,5 @@
 import styles from "./OptionGroup.module.scss";
-import ComputationOption from "./Option";
+import Option from "./Option";
 import React from "react";
 import {Checkbox, Empty} from "antd";
 import {CheckboxValueType} from "antd/es/checkbox/Group";
@@ -24,16 +24,18 @@ const OptionGroup: React.FC<OptionGroupProp> = ({options,onChange}) => {
         );
     }
 
+    const selected=options.filter(item=>item.isChecked).map(item=>item.value)
+
     return (
-        <Checkbox.Group onChange={onChange} className={styles.options}>
+        <Checkbox.Group onChange={onChange} className={styles.options} value={selected}>
                 {
-                    options.map(item => {
-                        return <ComputationOption
+                    options.map((item,index) => {
+                        return <Option
                             label={item.label}
                             value={item.value}
                             labelColor={item.labelColor}
                             tip={item.tip}
-                            isChecked={item.isChecked}
+                            isChecked={Boolean(item.isChecked)}
                             key={item.value}/>
                     })
                 }

@@ -20,6 +20,7 @@ import {RemoveComputationNodePayload} from "../store/payload/RemoveComputationNo
 import {ComputationOptions, Root_Computation_Node_SerialId} from "../utils/constants";
 import FadeInOut from "./FadeInOut/FadeInOut";
 import Container from "./Container";
+import ComputationOperation from "./ComputationOperation";
 
 interface ComputationGroupProp {
     serialId: string;
@@ -34,10 +35,7 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
     const headers = selectedOptions.map(item => item.option?.title || '');
     const dropRef = useRef(null);
     const dispatch = useComputationDispatch();
-    const [inViewport] = useInViewport(dropRef);
-    const display = useDebounce(inViewport, {
-        wait: 500
-    })
+
     const addNewComputationNode = async (id: string, targetSerialId: string, parentSerialId: string) => {
         console.info('Group invoke')
         const resultAction = await dispatch(fetchComputationItemById(id))
@@ -70,7 +68,6 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
     });
 
     const showContent = Boolean(computationNode && !computationNode.isGroupContainerNode)
-    const showChildren = Boolean(computationNode?.children?.length && computationNode?.serialId !== Root_Computation_Node_SerialId)
 
     return (
         <div ref={dropRef}>
@@ -110,31 +107,6 @@ const ComputationCard: React.FC<ComputationGroupProp> = ({serialId}) => {
                 </div>
             </Container>
 
-            <div className={showChildren ? styles.computation_card_children : ''}>
-                {
-                    computationNode?.children?.map((item, index) => {
-                        return <div key={item.serialId}>
-                            {computationNode?.isGroupContainerNode && index % 2 === 1 &&
-                                <div className={styles.computation_card_children_condition}>
-                                    <select className={styles.computation_card_children_condition_selector}>
-                                        {
-                                            ComputationOptions.map((computationOption,index) => {
-                                                return <option
-                                                    key={index}
-                                                    value={computationOption.value}
-                                                               selected={computationOption.value === computationNode?.operation}
-                                                               className={styles.computation_card_children_condition_selector_option}>
-                                                    {computationOption.title}
-                                                </option>
-                                            })
-                                        }
-                                    </select>
-                                </div>}
-                            <ComputationCard serialId={item.serialId} key={item.serialId}/>
-                        </div>
-                    })
-                }
-            </div>
         </div>
     )
 

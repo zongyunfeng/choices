@@ -1,53 +1,31 @@
-import React, {useRef} from "react";
-import {useDrop} from "ahooks";
+import React from "react";
 import styles from './ComputationGroup.module.scss';
 import ComputationCard from "./ComputationCard";
-import {useComputationDispatch, useComputationNode} from "../store/hooks";
-import {addComputationNode} from "../store/computationSlice";
-import {AddComputationNodePayload} from "../store/payload/AddComputationNodePayload";
-import {fetchComputationItemById} from "../store/actions";
-import {unwrapResult} from "@reduxjs/toolkit";
+import {useComputationNode} from "../store/hooks";
 import {Root_Computation_Node_SerialId} from "../utils/constants";
 
-interface ComputationPanelProp {
+interface ComputationGroupProp {
+    serialId: string
 }
 
-const ComputationGroup: React.FC<ComputationPanelProp> = ({}) => {
-
-    const dropRef = useRef(null);
-    const dispatch = useComputationDispatch();
-
-
-    const addNewComputationNode = async (id: string, targetSerialId: string, parentSerialId: string) => {
-        console.info('Panel invoke')
-        const resultAction = await dispatch(fetchComputationItemById(id))
-        const item = unwrapResult(resultAction)
-        if (item) {
-            await dispatch(
-                addComputationNode(
-                    AddComputationNodePayload.create(
-                        parentSerialId, targetSerialId, item
-                    )
-                )
-            )
-        }
-    }
-    useDrop(dropRef, {
-        onText: async (text, e) => {
-            await addNewComputationNode(text, '', Root_Computation_Node_SerialId)
-        },
-    });
+const ComputationGroup: React.FC<ComputationGroupProp> = ({serialId}) => {
+    const computationNode = useComputationNode(serialId)
 
     return (
         <div className={styles.computation_group}>
-            <span className={styles.computation_group_header}>Include members in these segments</span>
-            <div className={styles.computation_group_content} ref={dropRef}>
+            <div
+                className={serialId !== Root_Computation_Node_SerialId ? styles.computation_group_children : undefined}>
                 {
-                    <ComputationCard serialId={Root_Computation_Node_SerialId}/>
+                    computationNode?.children.map(item => {
+                        if (item.isGroupContainerNode) {
+                            return <ComputationGroup serialId={item.serialId} key={item.serialId}/>
+                        }
+                        return <ComputationCard serialId={item.serialId} key={item.serialId}/>
+                    })
                 }
             </div>
         </div>
     );
 }
 
-export default ComputationGroup;
+export default React.memo(ComputationGroup);
