@@ -1,13 +1,16 @@
 import React, {useCallback, useRef} from "react";
 import {useDrop} from "ahooks";
 import styles from './ComputationPanel.module.scss';
-import {useComputationDispatch, useRootComputationNode} from "../store/hooks";
+import {useCanRedo, useCanUndo, useComputationDispatch, useRootComputationNode} from "../store/hooks";
 import {addComputationNode} from "../store/computationSlice";
 import {AddComputationNodePayload} from "../store/payload/AddComputationNodePayload";
 import {fetchComputationItemById} from "../store/actions";
 import {unwrapResult} from "@reduxjs/toolkit";
 import {Root_Computation_Node_SerialId} from "../utils/constants";
 import ComputationGroup from "./ComputationGroup";
+import {Button} from "antd";
+import {ActionCreators as UndoActionCreators} from 'redux-undo'
+import {DoubleLeftOutlined, DoubleRightOutlined} from "@ant-design/icons";
 
 interface ComputationPanelProp {
 }
@@ -16,10 +19,9 @@ const ComputationPanel: React.FC<ComputationPanelProp> = ({}) => {
 
     const dropRef = useRef(null);
     const dispatch = useComputationDispatch();
-    const computationNode=useRootComputationNode();
+    const computationNode = useRootComputationNode();
 
     const addNewComputationNode = useCallback(async (id: string, targetSerialId: string, parentSerialId: string) => {
-        console.info('Panel invoke')
         const resultAction = await dispatch(fetchComputationItemById(id))
         const item = unwrapResult(resultAction)
         if (item) {
@@ -31,7 +33,15 @@ const ComputationPanel: React.FC<ComputationPanelProp> = ({}) => {
                 )
             )
         }
-    },[])
+    }, [])
+
+    const undo = useCallback(() => {
+        dispatch(UndoActionCreators.undo())
+    }, [dispatch])
+
+    const redo = useCallback(() => {
+        dispatch(UndoActionCreators.redo())
+    }, [dispatch])
 
     useDrop(dropRef, {
         onText: async (text, e) => {
@@ -39,12 +49,23 @@ const ComputationPanel: React.FC<ComputationPanelProp> = ({}) => {
         },
     });
 
+    const canUndo=useCanUndo()
+    const canRedo=useCanRedo()
+
     return (
         <div className={styles.computation_panel}>
-            <span className={styles.computation_panel_header}>Include members in these segments</span>
+            <div className={styles.computation_panel_header}>
+                <span>Include members in these segments</span>
+                <div className={styles.computation_panel_operations}>
+                    <Button onClick={undo} icon={<DoubleLeftOutlined/>} type={'link'} disabled={!canUndo}>上一步</Button>
+                    <Button onClick={redo} icon={<DoubleRightOutlined/>} type={'link'} disabled={!canRedo}>下一步</Button>
+                </div>
+            </div>
+
             <div className={styles.computation_panel_content} ref={dropRef}>
                 {
-                   computationNode?.children?.length? <ComputationGroup serialId={Root_Computation_Node_SerialId}/>:null
+                    computationNode?.children?.length ?
+                        <ComputationGroup serialId={Root_Computation_Node_SerialId}/> : null
                 }
             </div>
         </div>

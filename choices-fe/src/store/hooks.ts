@@ -10,7 +10,7 @@ export const useComputationDispatch: () => AppDispatch = useDispatch
 export const useComputationSelector: TypedUseSelectorHook<RootState> = useSelector
 
 export const useComputationNode: (serialId: string) => ComputationNode | undefined = (serialId: string) => {
-    const rootComputationNode = useComputationSelector((state) => state.computation.value)
+    const rootComputationNode = useComputationSelector((state) => state.computation.present.value)
     if (serialId === Root_Computation_Node_SerialId) {
         return rootComputationNode;
     }
@@ -25,4 +25,14 @@ export const useRootComputationNode = () => {
 export const useComputationNodeOptions = (serialId: string) => {
     const targetComputationNode = useComputationNode(serialId);
     return targetComputationNode?.options || new Array<StatefulOption<Option>>();
+}
+
+export const useCanUndo=()=>{
+    const past=useComputationSelector((state) => state.computation.past)
+    return Boolean(past?.length)
+}
+
+export const useCanRedo=()=>{
+    const future=useComputationSelector((state) => state.computation.future)
+    return Boolean(future?.length)
 }

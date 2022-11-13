@@ -12,9 +12,10 @@ import {message} from "antd";
 import {EnumComputationOperationTypes} from "../utils/enums";
 import {MarkNodeOptionsPayload} from "./payload/MarkNodeOptionsPayload";
 import {ChangeComputationOperationPayload} from "./payload/ChangeComputationOperationPayload";
+import undoable from 'redux-undo'
 
 export interface ComputationState {
-    value: ComputationNode
+    value:ComputationNode
 }
 
 const rootNode = ComputationNode.create(
@@ -30,7 +31,7 @@ const rootNode = ComputationNode.create(
 )
 
 const initialState: ComputationState = {
-    value: rootNode,
+    value:rootNode
 }
 
 export const computationSlice = createSlice({
@@ -109,7 +110,7 @@ export const computationSlice = createSlice({
         },
         removeComputationNode: (state, action: PayloadAction<RemoveComputationNodePayload>) => {
             const newState = _.cloneDeep<ComputationState>(state)
-            const {parentSerialId,targetSerialId} = action.payload;
+            const {parentSerialId, targetSerialId} = action.payload;
             // get the parent node
             const parentNode = visit(parentSerialId, newState.value)
             // get the siblings
@@ -147,7 +148,7 @@ export const computationSlice = createSlice({
         },
         markOptionsStatusForComputationNode: (state, action: PayloadAction<MarkNodeOptionsStatusPayload>) => {
             const newState = _.cloneDeep<ComputationState>(state)
-            const {serialId,status,id} = action.payload;
+            const {serialId, status, id} = action.payload;
             const target = visit(serialId, newState.value)
             // find the target computation node and mark the specified option
             if (target) {
@@ -177,12 +178,10 @@ export const computationSlice = createSlice({
         },
         changeComputationNodeOperation: (state, action: PayloadAction<ChangeComputationOperationPayload>) => {
             const newState = _.cloneDeep<ComputationState>(state)
-            const {operation,targetSerialId}=action.payload
+            const {operation, targetSerialId} = action.payload
             const target = visit(targetSerialId, newState.value)
-            console.info({target})
-            console.info({operation})
-            if(target){
-                target.operation=operation
+            if (target) {
+                target.operation = operation
                 return newState
             }
         }
@@ -198,4 +197,4 @@ export const {
     changeComputationNodeOperation
 } = computationSlice.actions
 
-export default computationSlice.reducer
+export default undoable(computationSlice.reducer)
