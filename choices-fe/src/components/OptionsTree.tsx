@@ -3,7 +3,7 @@ import {DataNode} from "antd/lib/tree";
 import {
     DownOutlined
 } from '@ant-design/icons';
-import {optionTreeDatas2DataNodes} from "../utils/converter";
+import {optionTreeDataArr2DataNodes} from "../utils/converter";
 import React, {useEffect, useState} from "react";
 import {useRequest} from "ahooks";
 import {getComputationTree} from "../service/OptionsApi";
@@ -21,7 +21,7 @@ const OptionsTree=()=> {
     const {data,error,loading}=useRequest(getComputationTree);
     const [treeData,setTreeData]=useState<Array<DataNode>>([]);
     useEffect(()=>{
-        const dataNodes=optionTreeDatas2DataNodes(data?.data?.data||[]);
+        const dataNodes=optionTreeDataArr2DataNodes(data?.data?.data||[]);
         setTreeData(dataNodes);
     },[data?.data?.data])
 

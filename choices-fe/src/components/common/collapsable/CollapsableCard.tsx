@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import styles from "./CollapsableCard.module.scss";
 import {CloseOutlined, FullscreenExitOutlined, FullscreenOutlined, HolderOutlined} from "@ant-design/icons";
-import FadeInOut from "../../FadeInOut/FadeInOut";
+import FadeInOut from "../fade/FadeInOut";
 
 interface CollapsableCardProp {
     /**

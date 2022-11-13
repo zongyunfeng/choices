@@ -2,8 +2,8 @@ import {OptionTreeNode} from "../model/OptionTreeNode";
 import {DataNode} from "antd/lib/tree";
 import {FolderFilled, TeamOutlined} from "@ant-design/icons";
 
-function optionTreeDatas2DataNodes(optionTreeDatas: OptionTreeNode[] = []) {
-    return optionTreeDatas.map(optionTreeData2DataNode);
+function optionTreeDataArr2DataNodes(optionTreeDataArr: OptionTreeNode[] = []) {
+    return optionTreeDataArr.map(optionTreeData2DataNode);
 }
 
 function optionTreeData2DataNode(optionTreeData: OptionTreeNode): DataNode {
@@ -27,4 +27,4 @@ function getDataNodeIcon(optionTreeData: OptionTreeNode) {
     }
 }
 
-export {optionTreeDatas2DataNodes, optionTreeData2DataNode}
+export {optionTreeDataArr2DataNodes, optionTreeData2DataNode}
