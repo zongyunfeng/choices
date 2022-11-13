@@ -16,11 +16,17 @@ class Option {
    */
   checked?:boolean;
 
-  constructor(data?: Option) {
+  private constructor(data?: Option) {
     this.id = data?.id || '';
     this.title = data?.title || '';
     this.count = data?.count || 0;
     this.checked=data?.checked||false;
+  }
+
+  public static create(id: string,title: string,count: number,checked=false){
+    return new Option({
+      id,title,count,checked
+    })
   }
 }
 

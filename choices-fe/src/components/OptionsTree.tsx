@@ -1,15 +1,15 @@
-import {Card, Divider, Spin, Tree, TreeProps} from "antd";
+import {Spin, Tree, TreeProps} from "antd";
 import {DataNode} from "antd/lib/tree";
 import {
-    DownOutlined, FolderFilled, HolderOutlined
+    DownOutlined
 } from '@ant-design/icons';
 import {optionTreeDatas2DataNodes} from "../utils/converter";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useRequest} from "ahooks";
 import {getComputationTree} from "../service/OptionsApi";
 import styles from './OptionsTree.module.scss'
 
-function OptionsTree() {
+const OptionsTree=()=> {
     const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
         console.log('selected', selectedKeys, info);
     };
@@ -51,4 +51,4 @@ function OptionsTree() {
     )
 }
 
-export default OptionsTree;
+export default React.memo(OptionsTree);

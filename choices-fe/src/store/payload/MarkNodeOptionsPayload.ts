@@ -1,6 +1,12 @@
 class MarkNodeOptionsPayload {
     status:boolean;
+    /**
+     * option ids
+     */
     ids:Array<string>;
+    /**
+     * target computation node serialId
+     */
     serialId:string;
 
     private constructor(data:MarkNodeOptionsPayload) {

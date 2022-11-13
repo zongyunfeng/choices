@@ -1,5 +1,11 @@
 class RemoveComputationNodePayload {
+    /**
+     * parent serialId
+     */
     parentSerialId: string;
+    /**
+     * target serialId
+     */
     targetSerialId: string;
 
     private constructor(data: RemoveComputationNodePayload) {

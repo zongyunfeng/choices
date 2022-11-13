@@ -14,6 +14,9 @@ import HighlightContainer from "./common/container/HighlightContainer";
 import {RemoveComputationNodePayload} from "../store/payload/RemoveComputationNodePayload";
 
 interface ComputationGroupProp {
+    /**
+     * id of the corresponding computation node
+     */
     serialId: string;
 }
 

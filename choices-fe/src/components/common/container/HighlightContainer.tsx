@@ -1,9 +1,18 @@
 import React from "react";
 
 interface HighlightContainerProp {
+    /**
+     * custom styles
+     */
     style?: React.CSSProperties
+    /**
+     * indicate if the container should in highlight status
+     */
     isHighlight: boolean
     children: React.ReactNode
+    /**
+     * the style that applied when in highlight status
+     */
     highlightStyle: React.CSSProperties
 }
 

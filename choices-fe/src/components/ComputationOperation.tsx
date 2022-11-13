@@ -4,7 +4,14 @@ import React from "react";
 import {EnumComputationOperationTypes} from "../utils/enums";
 
 interface ComputationOperationProp {
+    /**
+     * should show the operation
+     */
     visible: boolean,
+    /**
+     * selected operation
+     * @see EnumComputationOperationTypes for details
+     */
     operation?: EnumComputationOperationTypes
 }
 
@@ -12,7 +19,7 @@ const ComputationOperation: React.FC<ComputationOperationProp> = ({visible, oper
     return (
         visible ?
             <div className={styles.computation_operation}>
-                <select className={styles.computation_operation_selector}>
+                <select className={styles.computation_operation_selector} >
                     {
                         ComputationOptions.map((computationOption, index) => {
                             return <option

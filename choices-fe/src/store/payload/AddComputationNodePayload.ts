@@ -1,8 +1,18 @@
 import {ComputationItem} from "../../model/ComputationItem";
 
 class AddComputationNodePayload {
+    /**
+     * serialId for the parent
+     */
     parentSerialId: string;
+    /**
+     * the serialId on which drop action is occured
+     */
     targetSerialId: string;
+    /**
+     * infos about the dragged tree item
+     * @see ComputationItem for more details
+     */
     item: ComputationItem;
 
     private constructor(data: AddComputationNodePayload) {

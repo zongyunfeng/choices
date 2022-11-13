@@ -3,6 +3,9 @@ import {AnimatePresence, motion} from "framer-motion";
 import {upFadeVariants} from "./config";
 
 interface FadeInOutProp {
+    /**
+     * indicate if the container should in expand status
+     */
     show: boolean,
     children: React.ReactNode
 }

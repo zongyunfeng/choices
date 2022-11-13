@@ -8,7 +8,7 @@ function getComputationTree() {
 }
 
 function getComputationItem(id: string) {
-    return post<ComputationItem>('http://localhost:8080/computation/item', new GetComputationItemParam({id}))
+    return post<ComputationItem>('http://localhost:8080/computation/item', GetComputationItemParam.create(id))
 }
 
 export {getComputationTree,getComputationItem};

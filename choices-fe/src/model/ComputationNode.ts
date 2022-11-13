@@ -43,16 +43,30 @@ class ComputationNode {
      */
     operation?: EnumComputationOperationTypes = EnumComputationOperationTypes.AND
 
-    constructor(data?: ComputationNode) {
-        this.nodeId = data?.nodeId || '';
-        this.title = data?.title || '';
-        this.directory = data?.directory || '';
-        this.options = data?.options || [];
-        this.serialId = data?.serialId || '';
-        this.parentSerialId = data?.parentSerialId || '';
-        this.children = data?.children || [];
-        this.isGroupContainerNode = data?.isGroupContainerNode || false;
-        this.operation = data?.operation || EnumComputationOperationTypes.AND
+    private constructor(data: ComputationNode) {
+        this.nodeId = data.nodeId || '';
+        this.title = data.title || '';
+        this.directory = data.directory || '';
+        this.options = data.options || [];
+        this.serialId = data.serialId || '';
+        this.parentSerialId = data.parentSerialId || '';
+        this.children = data.children || [];
+        this.isGroupContainerNode = data.isGroupContainerNode || false;
+        this.operation = data.operation || EnumComputationOperationTypes.AND
+    }
+
+    public static create(nodeId: string,
+                         title: string,
+                         directory: string,
+                         options: Array<StatefulOption<Option>>,
+                         serialId: string,
+                         parentSerialId: string,
+                         children: Array<ComputationNode>,
+                         isGroupContainerNode = false,
+                         operation = EnumComputationOperationTypes.AND) {
+        return new ComputationNode({
+            nodeId, title, directory, options, serialId, parentSerialId, children, isGroupContainerNode, operation
+        })
     }
 }
 

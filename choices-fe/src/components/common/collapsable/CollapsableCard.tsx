@@ -4,12 +4,30 @@ import {CloseOutlined, FullscreenExitOutlined, FullscreenOutlined, HolderOutline
 import FadeInOut from "../../FadeInOut/FadeInOut";
 
 interface CollapsableCardProp {
+    /**
+     * collapse icon
+     */
     collapseIcon?: React.ReactNode
+    /**
+     * expand icon
+     */
     expandIcon?: React.ReactNode
+    /**
+     * close icon
+     */
     closeIcon?: React.ReactNode
+    /**
+     * content for header
+     */
     headerContent?: React.ReactNode
     children: React.ReactNode
+    /**
+     * close callback
+     */
     onClose?: () => void
+    /**
+     * style for the container
+     */
     style?: React.CSSProperties
 }
 
@@ -32,7 +50,7 @@ const CollapsableCard: React.FC<CollapsableCardProp> = ({
                 <div className={styles.collapsable_card_header_operations}>
                     <div onClick={() => {
                         setCollapse(!collapse)
-                    }}>{collapse ? expandIcon : collapseIcon}</div>
+                    }} className={styles.collapsable_card_header_operations_collapse}>{collapse ? expandIcon : collapseIcon}</div>
                     <div onClick={onClose} className={styles.collapsable_card_header_operations_close}>
                         {closeIcon}
                     </div>

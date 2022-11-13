@@ -16,18 +16,17 @@ export interface ComputationState {
     value: ComputationNode
 }
 
-const rootNode = new ComputationNode(
-    {
-        nodeId: '',
-        title: '',
-        directory: '',
-        options: [],
-        serialId: Root_Computation_Node_SerialId,
-        parentSerialId: '',
-        children: [],
-        isGroupContainerNode: true,
-        operation:EnumComputationOperationTypes.None
-    })
+const rootNode = ComputationNode.create(
+    '',
+    '',
+    '',
+    [],
+    Root_Computation_Node_SerialId,
+    '',
+    [],
+    true,
+    EnumComputationOperationTypes.None
+)
 
 const initialState: ComputationState = {
     value: rootNode,
@@ -41,41 +40,47 @@ export const computationSlice = createSlice({
             const newState = _.cloneDeep<ComputationState>(state)
             const data = action.payload.item
             const options = data.options.map(item => StatefulOption.create(item))
-            const newNode = new ComputationNode({
-                nodeId: data.nodeId,
-                title: data.title,
-                directory: data.directory,
+            const nodeId = data.nodeId;
+            const {parentSerialId, targetSerialId} = action.payload
+            const newNode = ComputationNode.create(
+                data.nodeId,
+                data.title,
+                data.directory,
                 options,
-                serialId: nanoid(),
-                parentSerialId: action.payload.parentSerialId,
-                children: [],
-            });
+                nanoid(),
+                parentSerialId,
+                [],
+            );
 
-            const parent = visit(action.payload.parentSerialId, newState.value)
+            const parent = visit(parentSerialId, newState.value)
 
-            if (parent === newState.value) {
-                if(!action.payload.targetSerialId&&parent.children?.length>=2){
+            // only in two circumstances we get the root as parent
+            // 1. there is no actual computation added
+            // 2. we drop an item to one of root's children and there is at most 1 computation added
+            if (parent === newState.value && parent.children.length < 2) {
+                // restrict only two computation at the root
+                if (parent.children?.length >= 2) {
                     message.error('Only support add to node to the root!')
                     return state;
                 }
-                const hasAdded = parent?.children.find(item => item.nodeId === action.payload.item.nodeId)
+                // check if we have added same computation node in the same group
+                const hasAdded = parent?.children.find(item => item.nodeId === nodeId)
                 if (hasAdded) {
                     message.error('Please select a different node for computation!')
                     return state;
                 }
 
-                if (!Boolean(action.payload.targetSerialId)) {
-                    parent?.children?.push(newNode)
-                    return newState
-                }
+                parent.children.push(newNode)
+                return newState;
             }
 
             if (parent) {
-                const targetIndex = parent.children.findIndex(item => item.serialId === action.payload.targetSerialId)
+                const targetIndex = parent.children.findIndex(item => item.serialId === targetSerialId)
                 if (targetIndex !== -1) {
                     const targetNode = parent.children[targetIndex]
 
-                    if (targetNode.nodeId === action.payload.item.nodeId) {
+                    // restrict only two computation in the same group
+                    if (targetNode.nodeId === nodeId) {
                         message.error('Please select a different node for computation!')
                         return state;
                     }
@@ -83,17 +88,18 @@ export const computationSlice = createSlice({
                     if (targetNode) {
                         targetNode.parentSerialId = groupSerialId
                         newNode.parentSerialId = groupSerialId
-                        const group = new ComputationNode({
-                            nodeId: '',
-                            title: '',
-                            directory: '',
-                            options: [],
-                            serialId: groupSerialId,
-                            parentSerialId: parent.serialId,
-                            children: [targetNode, newNode],
-                            isGroupContainerNode: true,
-                            operation: EnumComputationOperationTypes.AND
-                        })
+                        // create a new container node to contain the two node and insert it
+                        const group = ComputationNode.create(
+                            '',
+                            '',
+                            '',
+                            [],
+                            groupSerialId,
+                            parent.serialId,
+                            [targetNode, newNode],
+                            true,
+                            EnumComputationOperationTypes.AND
+                        )
                         parent.children[targetIndex] = group
                     }
                 }
@@ -102,12 +108,17 @@ export const computationSlice = createSlice({
         },
         removeComputationNode: (state, action: PayloadAction<RemoveComputationNodePayload>) => {
             const newState = _.cloneDeep<ComputationState>(state)
-            const parentNode = visit(action.payload.parentSerialId, newState.value)
-            const others = parentNode?.children?.filter(item => item.serialId !== action.payload.targetSerialId) || [];
+            const {parentSerialId,targetSerialId} = action.payload;
+            // get the parent node
+            const parentNode = visit(parentSerialId, newState.value)
+            // get the siblings
+            const others = parentNode?.children?.filter(item => item.serialId !== targetSerialId) || [];
             if (parentNode) {
+                // get the grandparent node
                 const upperNode = visit(parentNode.parentSerialId, newState.value)
                 if (upperNode) {
                     const parentIndex = upperNode?.children?.findIndex(item => item.serialId === parentNode.serialId);
+                    // remove parent node and add siblings to the grandparent node
                     if (parentIndex !== -1) {
                         const left = _.slice(upperNode?.children, 0, parentIndex)
                         const right = _.slice(upperNode?.children, parentIndex + 1)
@@ -118,6 +129,7 @@ export const computationSlice = createSlice({
                         upperNode.children = [...left, ...otherNodes, ...right]
                     }
                 } else {
+                    // parent node is the root node
                     parentNode.children = others
                     parentNode.operation = EnumComputationOperationTypes.None
                 }
@@ -134,15 +146,14 @@ export const computationSlice = createSlice({
         },
         markOptionsStatusForComputationNode: (state, action: PayloadAction<MarkNodeOptionsStatusPayload>) => {
             const newState = _.cloneDeep<ComputationState>(state)
-            const target = visit(action.payload.serialId, newState.value)
-            console.info({target})
+            const {serialId,status,id} = action.payload;
+            const target = visit(serialId, newState.value)
+            // find the target computation node and mark the specified option
             if (target) {
-                const targetOptionIndex = target.options.findIndex(item => item.option.id === action.payload.id)
-                console.info({targetOptionIndex})
+                const targetOptionIndex = target.options.findIndex(item => item.option.id === id)
                 const targetOption = target.options?.[targetOptionIndex]
-                console.info({targetOption})
                 if (targetOption) {
-                    targetOption.status = action.payload.status
+                    targetOption.status = status
                     target.options[targetOptionIndex] = StatefulOption.create(targetOption.option, targetOption.status)
                 }
                 return newState
@@ -150,18 +161,16 @@ export const computationSlice = createSlice({
         },
         markOptionsForComputationNode: (state, action: PayloadAction<MarkNodeOptionsPayload>) => {
             const newState = _.cloneDeep<ComputationState>(state)
-            const target = visit(action.payload.serialId, newState.value)
+            const serialId = action.payload.serialId;
+            const target = visit(serialId, newState.value)
             if (target) {
+                // batch mark options
                 const newOptions = target.options.map(item => {
-                    if(action.payload.ids.includes(item.option.id)){
-                        item.status=true
-                    }else{
-                        item.status=false
-                    }
+                    item.status = action.payload.ids.includes(item.option.id);
                     return item;
                 })
 
-                target.options=newOptions
+                target.options = newOptions
                 return newState
             }
         },

@@ -13,6 +13,9 @@ import {MarkNodeOptionsPayload} from "../store/payload/MarkNodeOptionsPayload";
 import OptionSearcher from "./common/search/OptionSearcher";
 
 interface SelectionProp {
+    /**
+     * id of the corresponding computation node
+     */
     serialId: string;
 }
 

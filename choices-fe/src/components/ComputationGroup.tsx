@@ -6,6 +6,9 @@ import {Root_Computation_Node_SerialId} from "../utils/constants";
 import ComputationOperation from "./ComputationOperation";
 
 interface ComputationGroupProp {
+    /**
+     * id of the corresponding computation node
+     */
     serialId: string
 }
 

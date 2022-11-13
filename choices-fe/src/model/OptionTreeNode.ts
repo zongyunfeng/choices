@@ -10,6 +10,12 @@ class OptionTreeNode {
         this.children = data?.children;
         this.parent = data?.parent;
     }
+
+    public static create(id: string,title: string,children: Array<OptionTreeNode>=[],parent: string|undefined){
+        return new OptionTreeNode({
+            id,title,children,parent
+        })
+    }
 }
 
 export {OptionTreeNode}

@@ -11,15 +11,39 @@ interface SearchOption {
 }
 
 interface OptionSearcherProp {
+    /**
+     * indicate if should show the search icon
+     */
     searchIconPrefix?: boolean,
+    /**
+     * the options
+     */
     options: Array<SearchOption>,
+    /**
+     * specify which prop of the option used as the label
+     */
     labelProp: 'label' | 'value',
+    /**
+     * specify which prop of the option used for filter
+     */
     filterProp: 'label' | 'value',
     placeholder?: string,
     size?: SizeType,
+    /**
+     * onSelect callback
+     */
     onSelect?: (value: string) => void,
+    /**
+     * onDeselect callback
+     */
     onDeselect?: (value: string) => void,
+    /**
+     * style used for container
+     */
     style?: React.CSSProperties,
+    /**
+     * style used for inner input
+     */
     searchStyle?: React.CSSProperties,
 }
 

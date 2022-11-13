@@ -19,11 +19,17 @@ class ComputationItem {
    */
   options: Array<Option>;
 
-  constructor(data?: ComputationItem) {
-    this.nodeId = data?.nodeId || '';
-    this.title = data?.title || '';
-    this.directory = data?.directory || '';
-    this.options = data?.options || [];
+  private constructor(data: ComputationItem) {
+    this.nodeId = data.nodeId;
+    this.title = data.title;
+    this.directory = data.directory;
+    this.options = data.options;
+  }
+
+  public static create(nodeId: string, title: string,directory: string, options:Array<Option>){
+    return new ComputationItem({
+      nodeId, title, directory, options
+    })
   }
 }
 
