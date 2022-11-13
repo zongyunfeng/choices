@@ -57,8 +57,8 @@ const ComputationPanel: React.FC<ComputationPanelProp> = ({}) => {
             <div className={styles.computation_panel_header}>
                 <span>Include members in these segments</span>
                 <div className={styles.computation_panel_operations}>
-                    <Button onClick={undo} icon={<DoubleLeftOutlined/>} type={'link'} disabled={!canUndo}>上一步</Button>
-                    <Button onClick={redo} icon={<DoubleRightOutlined/>} type={'link'} disabled={!canRedo}>下一步</Button>
+                    <Button onClick={undo} icon={<DoubleLeftOutlined/>} type={'link'} disabled={!canUndo}>Undo</Button>
+                    <Button onClick={redo} icon={<DoubleRightOutlined/>} type={'link'} disabled={!canRedo}>Redo</Button>
                 </div>
             </div>
 
