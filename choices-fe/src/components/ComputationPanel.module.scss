@@ -1,5 +1,6 @@
 .computation_panel {
   background: #ffffff;
+  overflow: scroll;
 
   &_header{
     display: flex;
@@ -13,10 +14,9 @@
     background-color: #BDFCC966;
     min-width: 600px;
     max-width: 600px;
-    max-height: 800px;
+    max-height: 700px;
     min-height: 500px;
-    padding-left: 15px;
-    padding-right: 15px;
-    overflow: auto;
+    padding: 15px;
+    overflow: scroll;
   }
 }

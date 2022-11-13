@@ -10,7 +10,6 @@ import {
 } from "../store/computationSlice";
 import {MarkNodeOptionsStatusPayload} from "../store/payload/MarkNodeOptionsStatusPayload";
 import {MarkNodeOptionsPayload} from "../store/payload/MarkNodeOptionsPayload";
-import {useWhyDidYouUpdate} from "ahooks";
 import OptionSearcher from "./common/search/OptionSearcher";
 
 interface SelectionProp {
@@ -19,7 +18,6 @@ interface SelectionProp {
 
 const ComputationSelector: React.FC<SelectionProp> = ({serialId}) => {
     const options = useComputationNodeOptions(serialId);
-    useWhyDidYouUpdate('ComputationSelector', {serialId, options})
     const selectedOptions = options.filter(item => item.status);
     const dispatch = useComputationDispatch();
     const optionsForSearch = options.map(item => {
