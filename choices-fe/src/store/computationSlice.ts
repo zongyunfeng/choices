@@ -54,7 +54,10 @@ export const computationSlice = createSlice({
             const parent = visit(action.payload.parentSerialId, newState.value)
 
             if (parent === newState.value) {
-
+                if(!action.payload.targetSerialId&&parent.children?.length>=2){
+                    message.error('Only support add to node to the root!')
+                    return state;
+                }
                 const hasAdded = parent?.children.find(item => item.nodeId === action.payload.item.nodeId)
                 if (hasAdded) {
                     message.error('Please select a different node for computation!')
@@ -62,7 +65,6 @@ export const computationSlice = createSlice({
                 }
 
                 if (!Boolean(action.payload.targetSerialId)) {
-                    console.info({parent})
                     parent?.children?.push(newNode)
                     return newState
                 }

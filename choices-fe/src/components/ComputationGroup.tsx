@@ -3,6 +3,7 @@ import styles from './ComputationGroup.module.scss';
 import ComputationCard from "./ComputationCard";
 import {useComputationNode} from "../store/hooks";
 import {Root_Computation_Node_SerialId} from "../utils/constants";
+import ComputationOperation from "./ComputationOperation";
 
 interface ComputationGroupProp {
     serialId: string
@@ -16,11 +17,19 @@ const ComputationGroup: React.FC<ComputationGroupProp> = ({serialId}) => {
             <div
                 className={serialId !== Root_Computation_Node_SerialId ? styles.computation_group_children : undefined}>
                 {
-                    computationNode?.children.map(item => {
-                        if (item.isGroupContainerNode) {
-                            return <ComputationGroup serialId={item.serialId} key={item.serialId}/>
-                        }
-                        return <ComputationCard serialId={item.serialId} key={item.serialId}/>
+                    computationNode?.children.map((item, index) => {
+                        return <div key={item.serialId}>
+                            <ComputationOperation
+                                operation={item?.operation}
+                                visible={Boolean(computationNode?.isGroupContainerNode && index % 2 === 1)}
+                            />
+                            {
+                                item.isGroupContainerNode ?
+                                    <ComputationGroup serialId={item.serialId} key={item.serialId}/>
+                                    : <ComputationCard serialId={item.serialId} key={item.serialId}/>
+                            }
+                        </div>
+
                     })
                 }
             </div>
