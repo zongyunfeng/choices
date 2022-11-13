@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useCallback, useMemo} from "react";
 import styles from './ComputationGroup.module.scss';
 import ComputationCard from "./ComputationCard";
-import {useComputationNode} from "../store/hooks";
-import {Root_Computation_Node_SerialId} from "../utils/constants";
-import ComputationOperation from "./ComputationOperation";
+import {useComputationDispatch, useComputationNode} from "../store/hooks";
+import {ComputationOptions, Root_Computation_Node_SerialId} from "../utils/constants";
+import ComputationOperation, {ComputationOperationProp, Operation} from "./ComputationOperation";
+import {changeComputationNodeOperation} from "../store/computationSlice";
+import {ChangeComputationOperationPayload} from "../store/payload/ChangeComputationOperationPayload";
 
 interface ComputationGroupProp {
     /**
@@ -14,6 +16,19 @@ interface ComputationGroupProp {
 
 const ComputationGroup: React.FC<ComputationGroupProp> = ({serialId}) => {
     const computationNode = useComputationNode(serialId)
+    const dispatch=useComputationDispatch()
+    const computationOperations=useMemo(()=>{
+        return ComputationOptions.map(item=>{
+            return {
+                title:item.title,
+                value:item.value
+            }as Operation
+        })
+    },[])
+
+    const onOperationSelect:ComputationOperationProp['onSelect']=useCallback((value)=>{
+        dispatch(changeComputationNodeOperation(ChangeComputationOperationPayload.create(value,serialId)))
+    },[dispatch,serialId])
 
     return (
         <div className={styles.computation_group}>
@@ -23,7 +38,9 @@ const ComputationGroup: React.FC<ComputationGroupProp> = ({serialId}) => {
                     computationNode?.children.map((item, index) => {
                         return <div key={item.serialId}>
                             <ComputationOperation
+                                options={computationOperations}
                                 operation={item?.operation}
+                                onSelect={onOperationSelect}
                                 visible={Boolean(computationNode?.isGroupContainerNode && index % 2 === 1)}
                             />
                             {

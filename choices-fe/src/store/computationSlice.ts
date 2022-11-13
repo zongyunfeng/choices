@@ -11,6 +11,7 @@ import {Root_Computation_Node_SerialId} from "../utils/constants";
 import {message} from "antd";
 import {EnumComputationOperationTypes} from "../utils/enums";
 import {MarkNodeOptionsPayload} from "./payload/MarkNodeOptionsPayload";
+import {ChangeComputationOperationPayload} from "./payload/ChangeComputationOperationPayload";
 
 export interface ComputationState {
     value: ComputationNode
@@ -174,6 +175,17 @@ export const computationSlice = createSlice({
                 return newState
             }
         },
+        changeComputationNodeOperation: (state, action: PayloadAction<ChangeComputationOperationPayload>) => {
+            const newState = _.cloneDeep<ComputationState>(state)
+            const {operation,targetSerialId}=action.payload
+            const target = visit(targetSerialId, newState.value)
+            console.info({target})
+            console.info({operation})
+            if(target){
+                target.operation=operation
+                return newState
+            }
+        }
     }
 })
 
@@ -183,6 +195,7 @@ export const {
     clearOptionsStatusForComputationNode,
     markOptionsStatusForComputationNode,
     markOptionsForComputationNode,
+    changeComputationNodeOperation
 } = computationSlice.actions
 
 export default computationSlice.reducer

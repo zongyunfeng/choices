@@ -1,9 +1,14 @@
 import styles from "./ComputationOperation.module.scss";
-import {ComputationOptions} from "../utils/constants";
-import React from "react";
+import React, {useCallback, useState} from "react";
 import {EnumComputationOperationTypes} from "../utils/enums";
+import {Select} from "antd";
 
-interface ComputationOperationProp {
+export interface Operation {
+    title: string;
+    value: EnumComputationOperationTypes
+}
+
+export interface ComputationOperationProp {
     /**
      * should show the operation
      */
@@ -13,25 +18,37 @@ interface ComputationOperationProp {
      * @see EnumComputationOperationTypes for details
      */
     operation?: EnumComputationOperationTypes
+    /**
+     * onSelect callback
+     */
+    onSelect: (value: EnumComputationOperationTypes) => void
+
+    options: Array<Operation>
 }
 
-const ComputationOperation: React.FC<ComputationOperationProp> = ({visible, operation=EnumComputationOperationTypes.AND}) => {
+const ComputationOperation: React.FC<ComputationOperationProp> = ({
+                                                                      visible,
+                                                                      operation = EnumComputationOperationTypes.AND,
+                                                                      options,
+                                                                      onSelect
+                                                                  }) => {
+    const [selected, setSelected] = useState(operation)
+    const selectOptions = options.map(item => {
+        return {
+            label: item.title,
+            value: item.value
+        }
+    })
+
+    const onSelectedCallback = useCallback((value: EnumComputationOperationTypes) => {
+        setSelected(value);
+        onSelect(value)
+    }, [onSelect])
+
     return (
         visible ?
             <div className={styles.computation_operation}>
-                <select className={styles.computation_operation_selector} >
-                    {
-                        ComputationOptions.map((computationOption, index) => {
-                            return <option
-                                key={index}
-                                value={computationOption.value}
-                                selected={computationOption.value === operation}
-                                className={styles.computation_operation_selector_option}>
-                                {computationOption.title}
-                            </option>
-                        })
-                    }
-                </select>
+                <Select options={selectOptions} value={selected} onSelect={onSelectedCallback}/>
             </div> : null
     )
 }
